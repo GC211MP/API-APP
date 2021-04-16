@@ -127,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
         {
             database.execSQL("update USER SET user_name="+"'"+name+"'"+ " where user_id like"+"'"+curid+"'");
         }
+        //비밀번호 변경
         public void Modifypwd(String pwd)
         {;
             database.execSQL("update USER SET password="+"'"+pwd+"'"+"where user_id like"+"'"+curid+"'");
@@ -157,6 +158,7 @@ public class MainActivity extends AppCompatActivity {
                 println("레코드 " + id + " " + uid + " " + sid + " " + time);
             }
         }
+        // data 파일 전체 출력.
         public void executeQuery2() {
             Cursor cursor = database.rawQuery("select * from DATA",null);
         }
