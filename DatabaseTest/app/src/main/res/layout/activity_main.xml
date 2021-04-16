@@ -15,32 +15,27 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/ddl"
-        android:text="User테이블 생성"
+        android:text="테이블 생성"
         />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/ddl2"
-        android:text="data테이블생성"
+        android:text="Userdata삽입"
         />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/dml"
-        android:text="테스트 user용 삽입"
+        android:text="DATA삽입"
         />
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/dml2"
-        android:text="테스트 data 삽입"
+        android:text="테스트데이터 조회"
         />
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/select"
-        android:text="데이터 조회"
-        />
+
 
         <TextView
             android:id="@+id/td"
