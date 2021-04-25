@@ -26,6 +26,40 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                // # USER
+
+                // Test Passed
+                // APIManager.getInstance().getUser("swdm");
+
+                // Test Passed
+                // APIManager.getInstance().postUser("aaaaa", "bbbbb", "ccccc");
+
+                // Test Passed
+                // APIManager.getInstance().patchUser("swdm", "11111", "22222");
+
+
+
+                // # DATA
+
+                // Test Passed
+                // APIManager.getInstance().getData("elapsed_time", true);
+
+                // Test Passed
+                // APIManager.getInstance().getData("elapsed_time", false);
+
+                // Test Passed
+                // APIManager.getInstance().postData(4, 1, 232);
+
+            }
+
+        }).start();
+
+
         textview=(TextView)findViewById(R.id.tvw);
         button1=(Button)findViewById(R.id.request);
         tvw=(TextView)findViewById(R.id.tv2);
