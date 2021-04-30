@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="gachon.mpclass.databasetest">
+    <permission android:name="gachon.mpclass.databasetest" android:protectionLevel="normal"/>
 
     <application
         android:allowBackup="true"
