@@ -3,6 +3,15 @@ package gachon.mpclass.databasetest;
 
 // WriteAgent 가 끝나면, (id, password, user_name, 성별, 키, 몸무게) 를 서버에 보낸다.
 public class UserDTO {
+    UserDTO(String uid, String upwd, String name, String sex, int ht, int wt)
+    {
+        this.id=uid;
+        this.pwd=upwd;
+        this.name=name;
+        this.sex=sex;
+        this.ht=ht;
+        this.wt=wt;
+    }
         private String id;
         private String pwd;
         private String name;

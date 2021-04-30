@@ -16,23 +16,24 @@ import gachon.mpclass.databasetest.R;
 public class MainActivity extends AppCompatActivity {
     SQLiteDatabase database;
 
-    TextView tv;
+
     SqliteOpenHelper helper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        tv = findViewById(R.id.td);
-        SqliteManager sqm=new SqliteManager(this,"User.db");//get the Command from SqlitManager
-        sqm.insert("jonny","34567i",190,120,"Male"); //test result
+
+        SqliteManager sqm=new SqliteManager(this,"User.db");//get the Command from SqliteManager
+        //sqm.insert("Yoni","34567ijk",150,130,"Female"); //test result
         sqm.select();
+        sqm.checkID("jonny");
+        sqm.getcurHeight("jonny");
+        sqm.getcurWeight("jonny");
+        sqm.getcurSex("jonny");
         //create the database
 
     }
 
-    public void println(String data)
-    {
-        tv.append(data+"\n");
-    }
+
 
 }

@@ -62,4 +62,64 @@ public class SqliteManager {
             Log.i("db1","id: "+id+" "+pw+" "+ht+" "+wt+ " "+sex);
         }
     }
+    //check the id is exists
+    public boolean checkID(String tid)
+    {
+        database=helper.getWritableDatabase();
+        Cursor c=database.rawQuery("select exists(select"+"'"+tid+"'"+" from user where id="+"'"+tid+"'"+")" ,null );
+        c.moveToNext();
+        int check=c.getInt(0);
+        if(check==1)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    //로그인 기능이 구현되야 할지 잘 몰라서 일단 구현.
+    public boolean Login(String tid, String tpw)
+    {
+        database=helper.getWritableDatabase();
+        Cursor c=database.rawQuery("select password from user where id="+"'"+tid+"'",null );
+        c.moveToNext();
+        String checkpw=c.getString(0);
+        if(tpw==checkpw)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    // Get the login user's height
+    public int getcurHeight(String cid)
+    {
+        database=helper.getWritableDatabase();
+        Cursor c=database.rawQuery("select height from user where id="+"'"+cid+"'",null );
+        c.moveToNext();
+        int cheight=c.getInt(0);
+        return cheight;
+    }
+    //Get the login user's weight
+    public int getcurWeight(String cid)
+    {
+        database=helper.getWritableDatabase();
+        Cursor c=database.rawQuery("select weight from user where id="+"'"+cid+"'",null );
+        c.moveToNext();
+        int cweight=c.getInt(0);
+        return cweight;
+    }
+    //Get the login user's sex
+    public String getcurSex(String cid)
+    {
+        database=helper.getWritableDatabase();
+        Cursor c=database.rawQuery("select sex from user where id="+"'"+cid+"'",null );
+        c.moveToNext();
+        String csex=c.getString(0);
+        return csex;
+    }
+
 }

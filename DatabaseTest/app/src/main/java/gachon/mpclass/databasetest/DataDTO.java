@@ -1,12 +1,14 @@
 package gachon.mpclass.databasetest;
 
 
-//->게임이 끝나면, (user_id, user_name, stage, distance, 칼로리) 서버에 보낸다.
+//->게임이 끝나면, (user_id, user_name, stage, distance,score, 칼로리) 서버에 보낸다.
+//추가 수정이 필요하다.
 public class DataDTO {
     private int stage_level;
     private float distance;
     private float calories;
     private int score;
+
     public float getCalories()
     {
         return calories;
