@@ -16,7 +16,7 @@ public class SqliteManager {
     public static SqliteManager open(Context context, String name) {
         return new SqliteManager(context, name);
     }
-
+    //write agent info 이후에 가능
     public void insert(String id,String pwd,int ht, int wt, String sex)
     {
         database=helper.getWritableDatabase();
@@ -26,6 +26,7 @@ public class SqliteManager {
         values.put("height",ht);
         values.put("weight",wt);
         values.put("sex",sex);
+        values.put("distance",0);
         database.insert("user",null,values);
         Log.i("db1","Success");
     }
@@ -36,6 +37,21 @@ public class SqliteManager {
         ContentValues values=new ContentValues();
         values.put("height",ht);
         values.put("weight",wt);
+        database.update("user",values,"id=?",new String[]{id});
+        Log.i("db1","Success update");
+    }
+    //updat the distance. when finishing the running
+    public void updatedis(String id,float dis)
+    {
+        database=helper.getWritableDatabase();
+        ContentValues values=new ContentValues();
+        //get the previous distance
+        Cursor c=database.rawQuery("select distance from user where id="+"'"+id+"'",null);
+        c.moveToNext();
+        float prevdis=c.getFloat(0);
+        float resultdis=prevdis+dis;
+        // sum of previous distance+ new distance=>final distance
+        values.put("distance",resultdis);
         database.update("user",values,"id=?",new String[]{id});
         Log.i("db1","Success update");
     }
@@ -59,7 +75,8 @@ public class SqliteManager {
             int ht=c.getInt(2);
             int wt=c.getInt(3);
             String sex=c.getString(4);
-            Log.i("db1","id: "+id+" "+pw+" "+ht+" "+wt+ " "+sex);
+            float dis=c.getFloat(5);
+            Log.i("db1","id: "+id+" "+pw+" "+ht+" "+wt+ " "+sex+" "+dis);
         }
     }
     //check the id is exists

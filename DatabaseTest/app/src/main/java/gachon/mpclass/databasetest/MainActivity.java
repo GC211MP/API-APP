@@ -22,15 +22,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        SqliteManager sqm=new SqliteManager(this,"User.db");//get the Command from SqliteManager
-        //sqm.insert("Yoni","34567ijk",150,130,"Female"); //test result
-        sqm.select();
-        sqm.checkID("jonny");
-        sqm.getcurHeight("jonny");
-        sqm.getcurWeight("jonny");
-        sqm.getcurSex("jonny");
         //create the database
+        SqliteManager sqm=new SqliteManager(this,"User.db");//get the Command from SqliteManager
+        sqm.insert("Yoni","34567ijk",150,70,"Female"); //test result
+        sqm.insert("Johnny","45678",190,90, "Male"); //test insert
+        sqm.insert("king","12345",160,50,"Female"); //test insert
+        sqm.select();
+        sqm.updatedis("Johnny", (float) 7.89); //test updating whole distance
+        sqm.select();
+
+
 
     }
 
