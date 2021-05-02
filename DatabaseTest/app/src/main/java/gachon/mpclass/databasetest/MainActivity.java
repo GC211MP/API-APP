@@ -24,12 +24,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //create the database
         SqliteManager sqm=new SqliteManager(this,"User.db");//get the Command from SqliteManager
-        sqm.insert("Yoni","34567ijk",150,70,"Female"); //test result
-        sqm.insert("Johnny","45678",190,90, "Male"); //test insert
-        sqm.insert("king","12345",160,50,"Female"); //test insert
+        //sqm.insert("johnbas","12345","john",179,67,"Female");
         sqm.select();
-        sqm.updatedis("Johnny", (float) 7.89); //test updating whole distance
-        sqm.select();
+        Log.i("db1"," "+sqm.GetID());
+
 
 
 

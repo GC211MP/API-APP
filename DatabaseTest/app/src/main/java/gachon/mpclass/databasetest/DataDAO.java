@@ -3,20 +3,22 @@ package gachon.mpclass.databasetest;
 import java.sql.SQLException;
 //->게임이 끝나면, (user_id, user_name, stage, distance, 칼로리) 서버에 보낸다.
 public class DataDAO {
-    DataDTO dto=new DataDTO();
-    public class insert implements Runnable
+    public void Create(DataDTO dt) throws ClassNotFoundException, SQLException
     {
-        public void run()
-        {
-          //APIManager.getInstance().postData(uidx,stageId,etime);
-        }
+
     }
-    public class modify implements Runnable
+    public DataDTO Read(String id) throws ClassNotFoundException, SQLException
     {
-        public void run()
-        {
-            //APIManager.getInstance()
-        }
+        DataDTO dto=new DataDTO();
+        return dto;
+
+    }
+    public void Update(DataDTO dt) throws ClassNotFoundException, SQLException
+    {
+
+    }
+    public void Delete(DataDTO dt) throws ClassNotFoundException, SQLException
+    {
 
     }
 
