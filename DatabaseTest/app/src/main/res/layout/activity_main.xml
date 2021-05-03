@@ -43,7 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/dml"
-                android:text="DATA삽입"
+                android:text="출력"
                 android:layout_margin="3dp"
             />
             <Button
