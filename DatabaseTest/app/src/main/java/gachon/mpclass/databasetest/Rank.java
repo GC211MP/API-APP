@@ -4,9 +4,9 @@ public class Rank {
     private String uid;
     private int stage_id;
     private int distance;
-    private float calories;
+    private double calories;
     private int score;
-    Rank(String rid, int rsid, int rdis, float calo, int sc)
+    Rank(String rid, int rsid, int rdis, double calo, int sc)
     {
         this.uid=rid;
         this.stage_id=rsid;
@@ -46,7 +46,7 @@ public class Rank {
     {
         return stage_id;
     }
-    public float getCalories()
+    public double getCalories()
     {
         return calories;
     }

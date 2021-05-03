@@ -8,7 +8,7 @@ public class DataDTO {
     private int user_index;
     private int stage_id;
     private int distance;
-    private float calories;
+    private double calories;
     private int score;
 
     public Integer getIndex()
@@ -27,7 +27,7 @@ public class DataDTO {
     {
         return distance;
     }
-    public float getCalories()
+    public double getCalories()
     {
         return calories;
     }
@@ -43,7 +43,7 @@ public class DataDTO {
     {
         this.user_index=uidx;
     }
-    public void setCalories(float calo)
+    public void setCalories(double calo)
     {
         this.calories=calo;
     }

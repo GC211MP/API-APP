@@ -35,14 +35,14 @@ public class APIManager {
             while ((line = reader.readLine()) != null)
                 builder.append(line);
 
-
             String result = "";
             result = builder.toString();
             JSONObject json = new JSONObject(result);
 
-            String user_id = json.getString("user_id");
             int user_idx = json.getInt("user_idx");
+            String user_id = json.getString("user_id");
             String user_name = json.getString("user_name");
+
 
             Log.e("APIManager", json.toString());
             Log.e("APIManager", "user_id: " + user_id);
@@ -167,7 +167,6 @@ public class APIManager {
                 String userName = json.getJSONObject(i).getString("user_name");
                 int stageId = json.getJSONObject(i).getInt("stage_id");
                 int elapsedTime = json.getJSONObject(i).getInt("elapsed_time");
-
                 Log.e("APIManager", "c_date: " + cDate);
                 Log.e("APIManager", "user_name: " + userName);
                 Log.e("APIManager", "stage_id: " + stageId);

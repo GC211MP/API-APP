@@ -1,5 +1,16 @@
 package gachon.mpclass.databasetest;
 
+import android.util.Log;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -12,64 +23,78 @@ import javax.xml.transform.Result;
 //->게임이 끝나면, (user_id, user_name, stage, distance, 칼로리) 서버에 보낸다.
 public class DataDAO {
     //Enroll the data
-    public void Create(DataDTO dt) throws ClassNotFoundException, SQLException
+    public void Create(DataDTO dt)
     {
-        // class.forName("");
-        Connection conn= DriverManager.getConnection("");
-        PreparedStatement ps=conn.prepareStatement("insert into DATA(user_index, stage_id, distance, calories, score) values(?,?,?,?,?)");
-        ps.setInt(1, dt.getUser_index());
-        ps.setInt(2, dt.getStage_id());
-        ps.setInt(3, dt.getDistance());
-        ps.setFloat(4, dt.getCalories());
-        ps.setInt(5, dt.getScore());
-        ps.executeUpdate();
-        ps.close();
-        conn.close();
-    }
-    // Rank 읽어오려면, DTO에 있는 정보로, 부족 그리고 리스트로 가져와야하기 때문에, 어떻게 만들어야될지 모르겟다.
-    public ArrayList<Rank> Read(int stage) throws ClassNotFoundException, SQLException
-    {
-        ArrayList<Rank> rk=new ArrayList<Rank>();
-        // class.forName("");
-        Connection conn= DriverManager.getConnection("");
-        PreparedStatement ps=conn.prepareStatement("select user_id, stage_id, distance, calories, score from USER, DATA WHERE USER.index=DATA.user_index and DATA.stage_id=? order by desc ");
-        ps.setInt(1, stage);
-        ResultSet rs=ps.executeQuery();
-        while(rs.next())
-        {
-            String rid=rs.getString("user_id");
-            int rsid=rs.getInt("stage_id");
-            int dis=rs.getInt("distance");
-            float calories=rs.getFloat("calories");
-            int score=rs.getInt("score");
-            Rank rank=new Rank(rid, rsid, dis, calories,score);
-            rk.add(rank);
+        String result = null;
+        try {
+            URL url=new URL("https://api.gcmp.doky.space/data");
+            JSONObject json = new JSONObject();
+            json.put("user_idx", dt.getUser_index());
+            json.put("stage_id", dt.getStage_id());
+            json.put("distance",dt.getDistance());
+            json.put("calories",dt.getCalories());
+            json.put("score",dt.getScore());
+            String body = json.toString();
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Length", "length");
+            conn.setRequestProperty("Content-Type", "application/json");
+            DataOutputStream os = new DataOutputStream(conn.getOutputStream());
+            os.write(body.getBytes("UTF-8"));
+            os.flush();
+            os.close();
+            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String inputLine;
+            StringBuilder builder1 = new StringBuilder();
+            while((inputLine = in.readLine()) != null) {
+                builder1.append(inputLine);
+            }
+            result = builder1.toString();
+            in.close();
+            Log.e("APIManager", result);
         }
-        rs.close();
-        conn.close();
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    // Rank 읽어오기 위해서 Rank정보를 가져올 수 있게, 따로 클래스를 가져온다.
+    //stage와 feature인 score에 따라, 정보를 순차적으로 가져온다.
+    public ArrayList<Rank> Read(int stage, String feature) {
+        ArrayList<Rank> rk = new ArrayList<Rank>(); //Ranking 을 위한  Rank를 담을 class를 arraylist로 선언해서, arraylist에 담는다. 
+        try {
+            URL url = new URL("https://api.gcmp.doky.space/data?c=" + feature); //서버에 어떻게 보낼지에 대한 정보 부족. 서버에서 수정해주면 될것 같다.
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            InputStream is = conn.getInputStream();
+            StringBuilder builder = new StringBuilder();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+            String line;
+            while ((line = reader.readLine()) != null)
+                builder.append(line);
+            String result = "";
+            result = builder.toString();
+            JSONArray json = new JSONArray(result);
+            for (int i = 0; i < json.length(); i++) {
+                String rid = json.getJSONObject(i).getString("user_id");
+                int sid = json.getJSONObject(i).getInt("stage_id");
+                int dis = json.getJSONObject(i).getInt("distance");
+                double calories = json.getJSONObject(i).getDouble("calories");
+                int score = json.getJSONObject(i).getInt("score");
+                Rank rank = new Rank(rid, sid, dis, calories, score);
+                rk.add(rank);
+            }
+
+        } catch (Exception e) {
+            Log.e("APIManager", "GET getUser method failed: " + e.getMessage());
+            e.printStackTrace();
+        }
         return rk;
     }
+    // 미구현
     public void Update(DataDTO dt, int score) throws ClassNotFoundException, SQLException
     {
-        // class.forName("");
-        Connection conn= DriverManager.getConnection("");
-        PreparedStatement ps=conn.prepareStatement("select score from DATA where user_index=?");
-        ps.setInt(1, dt.getUser_index());
-        ResultSet rs=ps.executeQuery();
-        int prevscore= rs.getInt("score");
-        if(prevscore>score) //기존 점수가 더 높을 경우
-        {
-            return;
-        }
-        else //기록 갱신용
-        {
-           ps=conn.prepareStatement("update DATA set score=? where user_index=?");
-           ps.setInt(1, score);
-           ps.setInt(2, dt.getUser_index());
-           ps.executeUpdate();
-           ps.close();
-           conn.close();
-        }
+
     }
     //미구현.
     public void Delete(DataDTO dt) throws ClassNotFoundException, SQLException
