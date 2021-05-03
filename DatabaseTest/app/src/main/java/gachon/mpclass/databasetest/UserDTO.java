@@ -3,66 +3,47 @@ package gachon.mpclass.databasetest;
 
 // WriteAgent 가 끝나면, (id, password, user_name, 성별, 키, 몸무게) 를 서버에 보낸다.
 public class UserDTO {
-    UserDTO(String uid, String upwd, String name, String sex, int ht, int wt)
-    {
-        this.id=uid;
-        this.pwd=upwd;
-        this.name=name;
-        this.sex=sex;
-        this.ht=ht;
-        this.wt=wt;
-    }
-        private String id;
-        private String pwd;
-        private String name;
-       private String sex;
-       private int ht;
-       private  int wt;
-        public String getId()
+
+       private int index;
+        private String user_id;
+        private String user_name;
+        private String c_date;
+        private String user_password;
+
+        public Integer getIndex()
         {
-            return id;
+            return index;
         }
-        public String getPwd()
+        public String getUser_id()
         {
-            return pwd;
+            return user_id;
         }
-        public String getName()
+        public String getUser_name()
         {
-            return name;
+            return user_name;
         }
-        public String getSex()
+        public String getC_date()
         {
-            return sex;
+            return c_date;
         }
-        public int getWt()
+        public String getPassword()
         {
-            return wt;
+            return user_password;
         }
-        public int getHt()
-        {
-            return ht;
-        }
-    public void setId(String id) {
-        this.id = id;
+        public void setIndex(int idx) {
+        this.index = idx;
     }
-    public void setPwd(String pw)
+        public void setUser_id(String id)
     {
-        this.pwd=pw;
+        this.user_id=id;
     }
-    public void setSex(String s)
+        public void setUser_name(String s)
     {
-        this.sex=s;
+        this.user_name=s;
     }
-    public void setName(String nm)
+        public void setC_date(String time)
     {
-        this.name=nm;
+        this.c_date=time;
     }
-    public void setHt(int h)
-    {
-        this.ht=h;
-    }
-    public void setWt(int w)
-    {
-        this.wt=w;
-    }
+        public void setUser_password(String pw){this.user_password=pw;}
 }
