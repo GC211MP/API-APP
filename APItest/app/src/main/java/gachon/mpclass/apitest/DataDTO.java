@@ -3,9 +3,9 @@ package gachon.mpclass.apitest;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class RankDTO {
+public class DataDTO {
 
-    RankDTO(ArrayList<ArrayList<Item>> list){
+    DataDTO(ArrayList<ArrayList<Item>> list){
         this.list = list;
     }
 
