@@ -11,6 +11,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
+
 import gachon.mpclass.databasetest.R;
 //이 부분은 결과창을 보기 위해, 만들어 놓은 activity.
 public class MainActivity extends AppCompatActivity {
@@ -22,11 +24,37 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //create the database
-        SqliteManager sqm=new SqliteManager(this,"User.db");//get the Command from SqliteManager
+        SqliteManager sqm = new SqliteManager(this,"User.db"); // get the Command from SqliteManager
 //        sqm.insert("johnbas","12345","john",179,67,"Female");
         sqm.select();
+
+        Button a = findViewById(R.id.mdb);
+        a.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        new DataDAO().read("c_date", true);
+                    }
+                }).start();
+
+
+            }
+        });
+
+
+
+
 //        Log.i("db1"," "+sqm.GetID());
 
     }
 
+
+
+
+
 }
+
+

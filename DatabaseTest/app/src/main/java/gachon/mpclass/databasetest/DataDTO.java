@@ -1,67 +1,59 @@
 package gachon.mpclass.databasetest;
 
 
+import android.util.Log;
+
 //->게임이 끝나면, (user_id, user_name, stage, distance,score, 칼로리) 서버에 보낸다.
 //추가 수정이 필요하다.
 public class DataDTO {
 
     // Attribute
-    private int index;
-    private int user_index;
+    private String user_name;
     private int stage_id;
     private int distance;
-    private double calories;
+    private int calorie;
     private int score;
 
-    // Getter
-    public Integer getIndex()
-    {
-        return index;
-    }
-    public Integer getUser_index()
-    {
-        return user_index;
-    }
-    public  Integer getStage_id()
-    {
-        return stage_id;
-    }
-    public Integer getDistance()
-    {
-        return distance;
-    }
-    public double getCalories()
-    {
-        return calories;
-    }
-    public int getScore()
-    {
-        return score;
+    public DataDTO(String user_name, int stage_id, int distance, int calorie, int score) {
+        this.user_name = user_name;
+        this.stage_id = stage_id;
+        this.distance = distance;
+        this.calorie = calorie;
+        this.score = score;
     }
 
+    // Getter
+    public  Integer getStage_id() {
+        return stage_id;
+    }
+    public Integer getDistance() {
+        return distance;
+    }
+    public int getCalorie() {
+        return calorie;
+    }
+    public int getScore() {
+        return score;
+    }
+    public String getUser_name() {
+        return user_name;
+    }
+
+
     // Setter
-    public void setIndex(int idx)
-    {
-        this.index=idx;
+    public void setCalorie(int calorie) {
+        this.calorie = calorie;
     }
-    public void setUser_index(int uidx)
-    {
-        this.user_index=uidx;
+    public void setDistance(int dis) {
+        this.distance = dis;
     }
-    public void setCalories(double calo)
-    {
-        this.calories=calo;
+    public void setStage_id(int level) {
+        this.stage_id = level;
     }
-    public void setDistance(int dis)
-    {
-        this.distance=dis;
+    public void setScore(int sc) {
+        this.score = sc;
     }
-    public void setStage_id(int level)
-    {
-        this.stage_id=level;
-    }
-    public void setScore(int sc)
-    {
-        this.score=sc;
+    public void setUser_name(String user_name) {
+        this.user_name = user_name;
     }
 }

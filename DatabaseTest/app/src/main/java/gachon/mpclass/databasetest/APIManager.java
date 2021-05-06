@@ -21,6 +21,13 @@ public class APIManager {
     }
 
 
+
+    // https://api.gcmp.doky.space/data/distance?uidx=1 수신 코드
+    // https://api.gcmp.doky.space/data/calorie?uidx=1 수신 코드
+    // https://api.gcmp.doky.space/data/score?uidx=1 수신 코드
+
+
+
     // # USER
     public void getUser(String uid) {
         try {
