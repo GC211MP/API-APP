@@ -6,14 +6,15 @@ public class Rank {
     private int distance;
     private double calories;
     private int score;
-    Rank(String rid, int rsid, int rdis, double calo, int sc)
-    {
+
+    Rank(String rid, int rsid, int rdis, double calo, int sc) {
         this.uid=rid;
         this.stage_id=rsid;
         this.distance=rdis;
         this.calories=calo;
         this.score=sc;
     }
+
     public void setUid(String id)
     {
         this.uid=id;

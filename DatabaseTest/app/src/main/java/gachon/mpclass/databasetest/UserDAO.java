@@ -18,7 +18,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 
-
 // WriteAgent 가 끝나면, (id, password, user_name, 성별, 키, 몸무게) 를 서버에 보낸다.
 public class UserDAO {
     public void Create(UserDTO user) {
@@ -54,9 +53,10 @@ public class UserDAO {
             e.printStackTrace();
         }
     }
+
+
     // Read the user's data and return the user DTO
-    public UserDTO Read(String id)
-    {
+    public UserDTO Read(String id) {
         UserDTO dto=new UserDTO();
         try {
             URL url = new URL("https://api.gcmp.doky.space/user?uid=" + id);
@@ -83,15 +83,15 @@ public class UserDAO {
             dto.setC_date(c_date);
             dto.setUser_password(password);
         }
-        catch(Exception e)
-        {
+        catch(Exception e) {
             e.printStackTrace();
         }
         return dto;
     }
+
+
     // update 이름이랑 비밀번호 바꾸기.
-    public void Update(UserDTO user, String name, String pw)
-    {
+    public void Update(UserDTO user, String name, String pw) {
         String result = null;
         try {
             URL url=new URL("https://api.gcmp.doky.space/user");
@@ -118,21 +118,18 @@ public class UserDAO {
             in.close();
             Log.e("APIManager", result);
         }
-        catch(Exception e)
-        {
+        catch(Exception e) {
             Log.e("APIManager","POST postUser method failed: "+e.getMessage());
             e.printStackTrace();
         }
 
     }
+
+
     //미구현.
-    public void Delete(UserDTO user)
-    {
+    public void Delete(UserDTO user) {
 
     }
 
-
-    }
-
-
+}
 

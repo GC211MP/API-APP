@@ -23,8 +23,7 @@ import javax.xml.transform.Result;
 //->게임이 끝나면, (user_id, user_name, stage, distance, 칼로리) 서버에 보낸다.
 public class DataDAO {
     //Enroll the data
-    public void Create(DataDTO dt)
-    {
+    public void Create(DataDTO dt) {
         String result = null;
         try {
             URL url=new URL("https://api.gcmp.doky.space/data");
@@ -58,6 +57,8 @@ public class DataDAO {
             e.printStackTrace();
         }
     }
+
+
     // Rank 읽어오기 위해서 Rank정보를 가져올 수 있게, 따로 클래스를 가져온다.
     //stage와 feature인 score에 따라, 정보를 순차적으로 가져온다.
     public ArrayList<Rank> Read(int stage, String feature) {
@@ -91,18 +92,18 @@ public class DataDAO {
         }
         return rk;
     }
+
+
     // 미구현
-    public void Update(DataDTO dt, int score) throws ClassNotFoundException, SQLException
-    {
+    public void Update(DataDTO dt, int score) throws ClassNotFoundException, SQLException {
 
     }
+
+
     //미구현.
-    public void Delete(DataDTO dt) throws ClassNotFoundException, SQLException
-    {
+    public void Delete(DataDTO dt) throws ClassNotFoundException, SQLException {
 
     }
-
-
 
 }
 

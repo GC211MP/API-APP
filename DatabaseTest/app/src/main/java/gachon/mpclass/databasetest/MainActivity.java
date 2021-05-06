@@ -16,7 +16,6 @@ import gachon.mpclass.databasetest.R;
 public class MainActivity extends AppCompatActivity {
     SQLiteDatabase database;
 
-
     SqliteOpenHelper helper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,15 +23,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         //create the database
         SqliteManager sqm=new SqliteManager(this,"User.db");//get the Command from SqliteManager
-        //sqm.insert("johnbas","12345","john",179,67,"Female");
+//        sqm.insert("johnbas","12345","john",179,67,"Female");
         sqm.select();
-        Log.i("db1"," "+sqm.GetID());
-
-
-
+//        Log.i("db1"," "+sqm.GetID());
 
     }
-
-
 
 }

@@ -4,6 +4,8 @@ package gachon.mpclass.databasetest;
 //->게임이 끝나면, (user_id, user_name, stage, distance,score, 칼로리) 서버에 보낸다.
 //추가 수정이 필요하다.
 public class DataDTO {
+
+    // Attribute
     private int index;
     private int user_index;
     private int stage_id;
@@ -11,6 +13,7 @@ public class DataDTO {
     private double calories;
     private int score;
 
+    // Getter
     public Integer getIndex()
     {
         return index;
@@ -35,6 +38,8 @@ public class DataDTO {
     {
         return score;
     }
+
+    // Setter
     public void setIndex(int idx)
     {
         this.index=idx;

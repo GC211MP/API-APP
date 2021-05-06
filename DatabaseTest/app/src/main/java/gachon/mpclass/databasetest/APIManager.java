@@ -131,14 +131,11 @@ public class APIManager {
             Log.e("APIManager", result);
 
         }
-        catch(Exception e)
-        {
+        catch(Exception e) {
             Log.e("APIManager","POST postUser method failed: "+e.getMessage());
             e.printStackTrace();
         }
     }
-
-
 
 
     // # DATA
@@ -180,7 +177,6 @@ public class APIManager {
     }
 
 
-
     public void postData(int userIdx, int stageId, int elapsedTime) {
         String result = null;
         try {
@@ -214,11 +210,11 @@ public class APIManager {
             Log.e("APIManager", result);
 
         }
-        catch(Exception e)
-        {
+        catch(Exception e) {
             Log.e("APIManager","POST postUser method failed: "+e.getMessage());
             e.printStackTrace();
         }
+
     }
 
 }
