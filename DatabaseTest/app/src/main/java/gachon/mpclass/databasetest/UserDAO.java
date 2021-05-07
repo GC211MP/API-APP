@@ -53,8 +53,6 @@ public class UserDAO {
             e.printStackTrace();
         }
     }
-
-
     // Read the user's data and return the user DTO
     public UserDTO Read(String id) {
         UserDTO dto=new UserDTO();
@@ -73,15 +71,12 @@ public class UserDAO {
             result = builder.toString();
             JSONObject json = new JSONObject(result);
             String user_id = json.getString("user_id");
-            int user_idx = json.getInt("user_idx");
             String user_name = json.getString("user_name");
-            String c_date=json.getString("c_date");
             String password=json.getString("password");
-            dto.setIndex(user_idx);
             dto.setUser_id(user_id);
-            dto.setUser_name(user_id);
-            dto.setC_date(c_date);
+            dto.setUser_name(user_name);
             dto.setUser_password(password);
+            Log.i("APIManger", result);
         }
         catch(Exception e) {
             e.printStackTrace();
