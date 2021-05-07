@@ -7,12 +7,10 @@ public class SqliteDto {
     private int height;
     private int weight;
     private String sex;
-    public SqliteDto()
-    {
+    public SqliteDto() {
 
     }
-    public SqliteDto(String uid, String pw, String name, int ht, int wt, String sex)
-    {
+    public SqliteDto(String uid, String pw, String name, int ht, int wt, String sex) {
         this.id=uid;
         this.password=pw;
         this.name=name;

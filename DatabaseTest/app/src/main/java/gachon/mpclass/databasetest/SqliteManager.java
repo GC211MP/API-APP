@@ -36,6 +36,7 @@ public class SqliteManager {
             return false;
         }
     }
+    //Read the user data
     public SqliteDto Read(String id) {
         SqliteDto sdto=new SqliteDto();
         try {
@@ -45,14 +46,13 @@ public class SqliteManager {
             sdto = new SqliteDto(c.getString(0), c.getString(1), c.getString(2), c.getInt(3), c.getInt(4), c.getString(5));
             Log.i("db1", "Success");
         }
-        catch(Exception e)
-        {
+        catch(Exception e) {
             e.printStackTrace();
         }
         return sdto;
     }
     //update the user information, 이름과 비밀번호 수정
-    public boolean update(SqliteDto sdto, String name, String password) {
+    public boolean updateNamePassword(SqliteDto sdto, String name, String password) {
         try {
             database = helper.getWritableDatabase();
             ContentValues values = new ContentValues();
@@ -62,14 +62,29 @@ public class SqliteManager {
             Log.i("db1", "Success update");
             return true;
         }
-        catch(Exception e)
-        {
+        catch(Exception e) {
             e.printStackTrace();
             return false;
         }
     }
+    public boolean updateHeightWeight(SqliteDto sdto, int ht, int wt) {
+        try{
+            database = helper.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put("height", ht);
+            values.put("weight", wt);
+            database.update("user", values, "id=?", new String[]{sdto.getId()});
+            Log.i("db1", "Success update");
+            return true;
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+            return false;
+        }
 
-    // Get the id values
+    }
+
+    // Get the id values //이 부분도 써야될지 잘 모르겟다.
     public String getID() {
         database=helper.getWritableDatabase();
         Cursor c=database.rawQuery("select id from user",null);

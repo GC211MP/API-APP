@@ -66,20 +66,29 @@ public class StoreManager {
         boolean res3=udao2.Update(updateuser,name, pw);
         return res3;
     }
-    //이 부분이 근데 sqlite는 context가 parameter로 들어 있어서, 확신 X
+    //이 부분이 근데 sqlite는 context가 parameter로 들어 있어서, 확신 X, 돌아가긴 돈다.
+    //sqlite에 사용자 등록
     public boolean EnrollSqlite(Context context, SqliteDto sdto){
         SqliteManager sqm=new SqliteManager(context,"user.db");
         boolean res4=sqm.insert(sdto);
         return res4;
     }
+    //sqlite에서 id를 통해서, 사용자 값을 읽어온다
     public SqliteDto ReadSqlite(Context context, String id) {
         SqliteManager sqm=new SqliteManager(context, "user.db");
         return sqm.Read(id);
     }
-    public boolean UpdateSqlite(Context context, SqliteDto sdto, String name, String pw) {
+    //sqlite에서 이름과 비밀번호 수정.
+    public boolean UpdateSqliteName(Context context, SqliteDto sdto, String name, String pw) {
         SqliteManager sqm=new SqliteManager(context, "user.db");
-        boolean res4=sqm.update(sdto, name, pw);
+        boolean res4=sqm.updateNamePassword(sdto, name, pw);
         return res4;
+    }
+    //sqlite에서 키와 몸무게 수정.
+    public boolean UpdateSqliteHeight(Context context, SqliteDto sdto, int ht, int wt){
+        SqliteManager sqm=new SqliteManager(context, "user.db");
+        boolean res5=sqm.updateHeightWeight(sdto,ht,wt);
+        return res5;
     }
 
     // - get total distance
