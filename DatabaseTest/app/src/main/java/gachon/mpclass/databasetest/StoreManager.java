@@ -10,14 +10,14 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class APIManager {
+public class StoreManager {
 
     // Singleton
-    private static APIManager instance = new APIManager();
+    private static StoreManager instance = new StoreManager();
 
-    APIManager(){}
+    StoreManager(){}
 
-    public static APIManager getInstance(){
+    public static StoreManager getInstance(){
         return instance;
     }
 
