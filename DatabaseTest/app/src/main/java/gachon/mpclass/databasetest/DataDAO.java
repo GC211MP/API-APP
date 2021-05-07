@@ -19,7 +19,7 @@ import javax.xml.transform.Result;
 //->게임이 끝나면, (user_id, user_name, stage, distance, 칼로리) 서버에 보낸다.
 public class DataDAO {
     //Enroll the data
-    public void create(DataDTO dt) {
+    public boolean create(DataDTO dt) {
         String result = null;
         try {
             URL url=new URL("https://api.gcmp.doky.space/data/");
@@ -47,20 +47,22 @@ public class DataDAO {
             result = builder1.toString();
             in.close();
             Log.e("APIManager", result);
+            return true;
         }
         catch(Exception e) {
             e.printStackTrace();
+            return false;
         }
     }
 
 
     // Rank 읽어오기 위해서 Rank정보를 가져올 수 있게, 따로 클래스를 가져온다.
     // stage와 feature인 score에 따라, 정보를 순차적으로 가져온다.
-    public ArrayList<DataDTO> read(String feature, boolean isAscending) {
+    public ArrayList<DataDTO> read(String feature, boolean isAscending, int stage) {
         ArrayList<DataDTO> rk = new ArrayList<DataDTO>(); //Ranking 을 위한  Rank를 담을 class를 arraylist로 선언해서, arraylist에 담는다.
         try {
-            Log.e("=====", "https://api.gcmp.doky.space/data?c=" + feature + "&o=" + (isAscending?"asc":"desc"));
-            URL url = new URL("https://api.gcmp.doky.space/data?c=" + feature + "&o=" + (isAscending?"asc":"desc")); //서버에 어떻게 보낼지에 대한 정보 부족. 서버에서 수정해주면 될것 같다.
+            Log.e("=====", "https://api.gcmp.doky.space/data?c=" + feature + "&o=" + (isAscending?"asc":"desc") + (stage != -1 ? "&stage=" + stage : ""));
+            URL url = new URL("https://api.gcmp.doky.space/data?c=" + feature + "&o=" + (isAscending?"asc":"desc") + (stage != -1 ? "&stage=" + stage : ""));
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             InputStream is = conn.getInputStream();
@@ -91,11 +93,11 @@ public class DataDAO {
     }
 
 
-    // 미구현
+    // Not Implemented
     // public void update(DataDTO dt, int score) throws ClassNotFoundException, SQLException {}
 
 
-    // 미구현.
+    // Not Implemented
     // public void delete(DataDTO dt) throws ClassNotFoundException, SQLException {}
 
 }
