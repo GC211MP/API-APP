@@ -1,4 +1,5 @@
 package gachon.mpclass.databasetest;
+import android.content.Context;
 import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -37,22 +38,49 @@ public class StoreManager {
         boolean res = dao.create(enrollData);
         return res;
     }
-
-
     // get rank table data
     public ArrayList<DataDTO> getRankTable(String feature, boolean isAsc, int stageId){
         DataDAO dao = new DataDAO();
         return dao.read(feature, isAsc, stageId);
     }
-
-
     // get all rank table data
     // feature, isAsc: Order by `feature` with ascending or descending order
     public ArrayList<DataDTO> getAllStageRankTable(String feature, boolean isAsc){
         DataDAO dao = new DataDAO();
         return dao.read(feature, isAsc, -1);
     }
-
+    // Enroll the user
+    public boolean EnrollUser(UserDTO enrolluser) {
+        UserDAO udao=new UserDAO();
+        boolean res2=udao.Create(enrolluser);
+        return res2;
+    }
+    // Read the user
+    public UserDTO ReadUser(String id) {
+        UserDAO udao1=new UserDAO();
+        return udao1.Read(id);
+    }
+    // Update the user's name and password
+    public boolean UpdateUser(UserDTO updateuser,String name, String pw) {
+        UserDAO udao2=new UserDAO();
+        boolean res3=udao2.Update(updateuser,name, pw);
+        return res3;
+    }
+    //이 부분이 근데 sqlite는 context가 parameter로 들어 있어서, 확신 X
+    public boolean EnrollSqlite(Context context, SqliteDto sdto){
+        SqliteManager sqm=new SqliteManager(context,"user.db");
+        boolean res4=sqm.insert(sdto);
+        return res4;
+    }
+    public SqliteDto ReadSqlite(Context context, String id) {
+        SqliteManager sqm=new SqliteManager(context, "user.db");
+        return sqm.Read(id);
+    }
+    public boolean UpdateSqlite(Context context, SqliteDto sdto, String name, String pw) {
+        SqliteManager sqm=new SqliteManager(context, "user.db");
+        boolean res4=sqm.update(sdto, name, pw);
+        return res4;
+    }
 
     // - get total distance
     //   - stageId == -1 => total of all stages

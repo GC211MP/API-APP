@@ -16,18 +16,15 @@ import java.util.ArrayList;
 import gachon.mpclass.databasetest.R;
 //이 부분은 결과창을 보기 위해, 만들어 놓은 activity.
 public class MainActivity extends AppCompatActivity {
-    SQLiteDatabase database;
 
-    SqliteOpenHelper helper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //create the database
-        SqliteManager sqm = new SqliteManager(this,"User.db"); // get the Command from SqliteManager
-//        sqm.insert("johnbas","12345","john",179,67,"Female");
-        sqm.select();
-
+        //SqliteDto sql= new SqliteDto("jang","1234","haein",178,64,"Male"); //testing
+       // StoreManager.getInstance().EnrollSqlite(this, sql); //testing value
+        //StoreManager.getInstance().ReadSqlite(this,"jang"); //testing
+        //Log.i("db1"," "+StoreManager.getInstance().UpdateSqlite(this, sql, "jim","12345"));//testing
         Button a = findViewById(R.id.mdb);
         a.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        new DataDAO().read("c_date", true);
+                        //new DataDAO().read("c_date", true);
                     }
                 }).start();
 
