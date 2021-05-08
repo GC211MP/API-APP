@@ -7,6 +7,17 @@ import android.util.Log;
 //추가 수정이 필요하다.
 public class DataDTO {
 
+    @Override
+    public String toString() {
+        return "DataDTO{" +
+                "user_name='" + user_name + '\'' +
+                ", stage_id=" + stage_id +
+                ", distance=" + distance +
+                ", calorie=" + calorie +
+                ", score=" + score +
+                '}';
+    }
+
     // Attribute
     private String user_name;
     private int stage_id;

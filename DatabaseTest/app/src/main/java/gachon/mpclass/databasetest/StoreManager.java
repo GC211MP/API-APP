@@ -35,10 +35,20 @@ public class StoreManager {
 
 
     // set rank
-    public boolean setRank(DataDTO enrollData){
+    public boolean setRank(Context context, DataDTO enrollData){
+
+        // SQLite
+        SqliteManager sqm = new SqliteManager(context, "user.db");
+
+        // API Comm.
+        UserDAO uDao = new UserDAO();
+        UserDTO uDto = uDao.read(sqm.getID());
+        int uIdx = uDto.getUser_idx();
+
         DataDAO dao = new DataDAO();
-        boolean res = dao.create(enrollData);
+        boolean res = dao.create(uIdx, enrollData);
         return res;
+
     }
 
 
@@ -75,30 +85,30 @@ public class StoreManager {
 
 
     //sqlite에서 id를 통해서, 사용자 값을 읽어온다
-    public PersonalData readUserById(Context context, String id, List<Integer> stages) {
+    public PersonalData readUserData(Context context, Integer[] stages) {
 
         // SQLite
         SqliteManager sqm = new SqliteManager(context, "user.db");
-        SqliteDto sDto = sqm.Read(id);
+        SqliteDto sDto = sqm.read(sqm.getID());
 
         // API Comm.
         UserDAO uDao = new UserDAO();
-        UserDTO uDto = uDao.read(id);
-        int uidx = uDto.getUser_idx();
+        UserDTO uDto = uDao.read(sqm.getID());
+        int uIdx = uDto.getUser_idx();
 
         ArrayList<Integer> totalDistance = new ArrayList<Integer>();
-        for(int i = 0; i < stages.size(); i++)
-            totalDistance.add(this.getTotalDistance(uidx, stages.get(i)));
+        for(int i = 0; i < stages.length; i++)
+            totalDistance.add(this.getTotalDistance(uIdx, stages[i]));
 
         ArrayList<Integer> totalCalorie = new ArrayList<Integer>();
-        for(int i = 0; i < stages.size(); i++)
-            totalCalorie.add(this.getTotalDistance(uidx, stages.get(i)));
+        for(int i = 0; i < stages.length; i++)
+            totalCalorie.add(this.getTotalCalorie(uIdx, stages[i]));
 
         ArrayList<Integer> totalScore = new ArrayList<Integer>();
-        for(int i = 0; i < stages.size(); i++)
-            totalScore.add(this.getTotalDistance(uidx, stages.get(i)));
+        for(int i = 0; i < stages.length; i++)
+            totalScore.add(this.getTotalScore(uIdx, stages[i]));
 
-        int totalAllScore = this.getTotalScore(uidx, -1);
+        int totalAllScore = this.getTotalScore(uIdx, -1);
 
 
         PersonalData res = new PersonalData(
@@ -141,6 +151,21 @@ public class StoreManager {
             this.totalScoreByStage = totalScoreByStage;
             this.totalScore = totalScore;
         }
+        @Override
+        public String toString() {
+            return "PersonalData{" +
+                    "id='" + id + '\'' +
+                    ", password='" + password + '\'' +
+                    ", userName='" + userName + '\'' +
+                    ", sex='" + sex + '\'' +
+                    ", userHeight=" + userHeight +
+                    ", userWeight=" + userWeight +
+                    ", totalDistanceByStage=" + totalDistanceByStage +
+                    ", totalCalorieByStage=" + totalCalorieByStage +
+                    ", totalScoreByStage=" + totalScoreByStage +
+                    ", totalScore=" + totalScore +
+                    '}';
+        }
     }
 
 
@@ -163,9 +188,9 @@ public class StoreManager {
 
 
     //sqlite에서 키와 몸무게 수정.
-    public boolean updateUserHeightWeight(Context context, SqliteDto dto, int ht, int wt){
+    public boolean updateUserHeightWeight(Context context, int ht, int wt){
         SqliteManager sqm = new SqliteManager(context, "user.db");
-        boolean res = sqm.updateHeightWeight(dto, ht, wt);
+        boolean res = sqm.updateHeightWeight(ht, wt);
         return res;
     }
 

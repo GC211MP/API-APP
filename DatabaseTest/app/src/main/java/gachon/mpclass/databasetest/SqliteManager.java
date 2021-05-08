@@ -16,6 +16,25 @@ public class SqliteManager {
     public static SqliteManager open(Context context, String name) {
         return new SqliteManager(context,name);
     }
+
+
+    // print the all user. we can get the data using different command
+    //필요한 조건으로 충분히 가능.
+    public void select() {
+        database = helper.getWritableDatabase();
+        Cursor c = database.rawQuery("select * from user",null);
+        while(c.moveToNext()) {
+            String id=c.getString(0);
+            String pw=c.getString(1);
+            String name=c.getString(2);
+            int ht=c.getInt(3);
+            int wt=c.getInt(4);
+            String sex=c.getString(5);
+            Log.i("db1","id: "+id+" "+pw+" "+name+" "+ht+" "+wt+ " "+sex+" ");
+        }
+    }
+
+
     //write agent info 이후에 가능
     public boolean insert(SqliteDto sdto) {
         try {
@@ -29,6 +48,7 @@ public class SqliteManager {
             values.put("sex", sdto.getSex());
             database.insert("user", null, values);
             Log.i("db1", "Success");
+            select();
             return true;
         }
         catch(Exception e) {
@@ -37,13 +57,14 @@ public class SqliteManager {
         }
     }
     //Read the user data
-    public SqliteDto Read(String id) {
-        SqliteDto sdto=new SqliteDto();
+    public SqliteDto read(String id) {
+        SqliteDto sdto = null;
         try {
             database = helper.getWritableDatabase();
             Cursor c = database.rawQuery("select * from user where id=" + "'" + id + "'", null);
             c.moveToNext();
             sdto = new SqliteDto(c.getString(0), c.getString(1), c.getString(2), c.getInt(3), c.getInt(4), c.getString(5));
+            select();
             Log.i("db1", "Success");
         }
         catch(Exception e) {
@@ -59,6 +80,7 @@ public class SqliteManager {
             values.put("name", name);
             values.put("password", password);
             database.update("user", values, "id=?", new String[]{userId});
+            select();
             Log.i("db1", "Success update");
             return true;
         }
@@ -67,13 +89,14 @@ public class SqliteManager {
             return false;
         }
     }
-    public boolean updateHeightWeight(SqliteDto sdto, int ht, int wt) {
+    public boolean updateHeightWeight(int ht, int wt) {
         try{
             database = helper.getWritableDatabase();
             ContentValues values = new ContentValues();
             values.put("height", ht);
             values.put("weight", wt);
-            database.update("user", values, "id=?", new String[]{sdto.getId()});
+            database.update("user", values, "", null);
+            select();
             Log.i("db1", "Success update");
             return true;
         }
@@ -90,6 +113,7 @@ public class SqliteManager {
         Cursor c=database.rawQuery("select id from user",null);
         c.moveToNext();
         String gid=c.getString(0);
+        select();
         return gid;
     }
 
@@ -99,6 +123,7 @@ public class SqliteManager {
         Cursor c=database.rawQuery("select height from user where id="+"'"+cid+"'",null );
         c.moveToNext();
         int cheight=c.getInt(0);
+        select();
         return cheight;
     }
     //Get the login user's weight
@@ -107,6 +132,7 @@ public class SqliteManager {
         Cursor c=database.rawQuery("select weight from user where id="+"'"+cid+"'",null );
         c.moveToNext();
         int cweight=c.getInt(0);
+        select();
         return cweight;
     }
     //Get the login user's sex
@@ -115,6 +141,7 @@ public class SqliteManager {
         Cursor c=database.rawQuery("select sex from user where id="+"'"+cid+"'",null );
         c.moveToNext();
         String csex=c.getString(0);
+        select();
         return csex;
     }
 

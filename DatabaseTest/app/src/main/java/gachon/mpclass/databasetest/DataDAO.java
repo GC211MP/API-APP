@@ -19,12 +19,12 @@ import javax.xml.transform.Result;
 //->게임이 끝나면, (user_id, user_name, stage, distance, 칼로리) 서버에 보낸다.
 public class DataDAO {
     //Enroll the data
-    public boolean create(DataDTO dt) {
+    public boolean create(int userIdx, DataDTO dt) {
         String result = null;
         try {
             URL url=new URL("https://api.gcmp.doky.space/data/");
             JSONObject json = new JSONObject();
-            json.put("user_idx", 2);
+            json.put("user_idx", userIdx);
             json.put("stage_id", dt.getStage_id());
             json.put("distance",dt.getDistance());
             json.put("calorie",dt.getCalorie());

@@ -7,9 +7,19 @@ public class SqliteDto {
     private int height;
     private int weight;
     private String sex;
-    public SqliteDto() {
 
+    @Override
+    public String toString() {
+        return "SqliteDto{" +
+                "id='" + id + '\'' +
+                ", password='" + password + '\'' +
+                ", name='" + name + '\'' +
+                ", height=" + height +
+                ", weight=" + weight +
+                ", sex='" + sex + '\'' +
+                '}';
     }
+
     public SqliteDto(String uid, String pw, String name, int ht, int wt, String sex) {
         this.id=uid;
         this.password=pw;
@@ -18,6 +28,7 @@ public class SqliteDto {
         this.weight=wt;
         this.sex=sex;
     }
+
     public String getId() {
         return id;
     }
