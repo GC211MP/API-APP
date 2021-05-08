@@ -52,13 +52,13 @@ public class SqliteManager {
         return sdto;
     }
     //update the user information, 이름과 비밀번호 수정
-    public boolean updateNamePassword(SqliteDto sdto, String name, String password) {
+    public boolean updateNamePassword(String userId, String name, String password) {
         try {
             database = helper.getWritableDatabase();
             ContentValues values = new ContentValues();
             values.put("name", name);
             values.put("password", password);
-            database.update("user", values, "id=?", new String[]{sdto.getId()});
+            database.update("user", values, "id=?", new String[]{userId});
             Log.i("db1", "Success update");
             return true;
         }

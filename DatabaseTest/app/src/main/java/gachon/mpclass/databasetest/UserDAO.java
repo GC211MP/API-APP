@@ -20,14 +20,14 @@ import java.sql.SQLException;
 
 // WriteAgent 가 끝나면, (id, password, user_name, 성별, 키, 몸무게) 를 서버에 보낸다.
 public class UserDAO {
-    public boolean Create(UserDTO user) {
+    public boolean create(UserDTO user, String password) {
         String result=null;
         try {
             URL url = new URL("https://api.gcmp.doky.space/user");
             JSONObject json = new JSONObject();
             json.put("user_id", user.getUser_id());
             json.put("user_name", user.getUser_name());
-            json.put("user_password", user.getPassword());
+            json.put("user_password", password);
             String body = json.toString();
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
@@ -55,9 +55,11 @@ public class UserDAO {
             return false;
         }
     }
+
+
     // Read the user's data and return the user DTO
-    public UserDTO Read(String id) {
-        UserDTO dto=new UserDTO();
+    public UserDTO read(String id) {
+        UserDTO dto = null;
         try {
             URL url = new URL("https://api.gcmp.doky.space/user?uid=" + id);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -73,11 +75,10 @@ public class UserDAO {
             result = builder.toString();
             JSONObject json = new JSONObject(result);
             String user_id = json.getString("user_id");
+            int user_idx = json.getInt("user_idx");
             String user_name = json.getString("user_name");
-            String password=json.getString("password");
-            dto.setUser_id(user_id);
-            dto.setUser_name(user_name);
-            dto.setUser_password(password);
+            dto = new UserDTO(user_id, user_name);
+            dto.setUser_idx(user_idx);
             Log.i("APIManger", result);
         }
         catch(Exception e) {
@@ -88,12 +89,12 @@ public class UserDAO {
 
 
     // update 이름이랑 비밀번호 바꾸기.
-    public boolean Update(UserDTO user, String name, String pw) {
+    public boolean update(String userId, String name, String pw) {
         String result = null;
         try {
             URL url=new URL("https://api.gcmp.doky.space/user");
             JSONObject json = new JSONObject();
-            json.put("user_id", user.getUser_id());
+            json.put("user_id", userId);
             json.put("user_name", name); //new name
             json.put("user_password", pw); //new password
             String body = json.toString();
@@ -126,7 +127,7 @@ public class UserDAO {
 
 
     //미구현.
-    public void Delete(UserDTO user) {
+    public void delete(UserDTO user) {
 
     }
 

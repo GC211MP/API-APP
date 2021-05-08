@@ -1,4 +1,5 @@
 package gachon.mpclass.databasetest;
+import android.app.Person;
 import android.content.Context;
 import android.util.Log;
 import org.json.JSONArray;
@@ -10,6 +11,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 public class StoreManager {
 
@@ -38,58 +40,135 @@ public class StoreManager {
         boolean res = dao.create(enrollData);
         return res;
     }
+
+
     // get rank table data
     public ArrayList<DataDTO> getRankTable(String feature, boolean isAsc, int stageId){
         DataDAO dao = new DataDAO();
         return dao.read(feature, isAsc, stageId);
     }
+
+
     // get all rank table data
     // feature, isAsc: Order by `feature` with ascending or descending order
     public ArrayList<DataDTO> getAllStageRankTable(String feature, boolean isAsc){
         DataDAO dao = new DataDAO();
         return dao.read(feature, isAsc, -1);
     }
-    // Enroll the user
-    public boolean EnrollUser(UserDTO enrolluser) {
-        UserDAO udao=new UserDAO();
-        boolean res2=udao.Create(enrolluser);
-        return res2;
-    }
-    // Read the user
-    public UserDTO ReadUser(String id) {
-        UserDAO udao1=new UserDAO();
-        return udao1.Read(id);
-    }
-    // Update the user's name and password
-    public boolean UpdateUser(UserDTO updateuser,String name, String pw) {
-        UserDAO udao2=new UserDAO();
-        boolean res3=udao2.Update(updateuser,name, pw);
-        return res3;
-    }
+
+
     //이 부분이 근데 sqlite는 context가 parameter로 들어 있어서, 확신 X, 돌아가긴 돈다.
     //sqlite에 사용자 등록
-    public boolean EnrollSqlite(Context context, SqliteDto sdto){
-        SqliteManager sqm=new SqliteManager(context,"user.db");
-        boolean res4=sqm.insert(sdto);
-        return res4;
+    public boolean enrollUser(Context context, SqliteDto sDto){
+
+        // 서버 연동 필요
+        UserDAO uDao = new UserDAO();
+        boolean isOk = uDao.create(new UserDTO(sDto.getId(), sDto.getName()), sDto.getPassword());
+
+        SqliteManager sqm = new SqliteManager(context,"user.db");
+        boolean res = false;
+        if(isOk)
+            res = sqm.insert(sDto);
+
+        return res;
     }
+
+
     //sqlite에서 id를 통해서, 사용자 값을 읽어온다
-    public SqliteDto ReadSqlite(Context context, String id) {
-        SqliteManager sqm=new SqliteManager(context, "user.db");
-        return sqm.Read(id);
+    public PersonalData readUserById(Context context, String id, List<Integer> stages) {
+
+        // SQLite
+        SqliteManager sqm = new SqliteManager(context, "user.db");
+        SqliteDto sDto = sqm.Read(id);
+
+        // API Comm.
+        UserDAO uDao = new UserDAO();
+        UserDTO uDto = uDao.read(id);
+        int uidx = uDto.getUser_idx();
+
+        ArrayList<Integer> totalDistance = new ArrayList<Integer>();
+        for(int i = 0; i < stages.size(); i++)
+            totalDistance.add(this.getTotalDistance(uidx, stages.get(i)));
+
+        ArrayList<Integer> totalCalorie = new ArrayList<Integer>();
+        for(int i = 0; i < stages.size(); i++)
+            totalCalorie.add(this.getTotalDistance(uidx, stages.get(i)));
+
+        ArrayList<Integer> totalScore = new ArrayList<Integer>();
+        for(int i = 0; i < stages.size(); i++)
+            totalScore.add(this.getTotalDistance(uidx, stages.get(i)));
+
+        int totalAllScore = this.getTotalScore(uidx, -1);
+
+
+        PersonalData res = new PersonalData(
+                sDto.getId(),
+                sDto.getPassword(),
+                sDto.getName(),
+                sDto.getSex(),
+                sDto.getHeight(),
+                sDto.getWeight(),
+                totalDistance,
+                totalCalorie,
+                totalScore,
+                totalAllScore
+        );
+
+        return res;
     }
+
+
+    protected class PersonalData {
+        String id;
+        String password;
+        String userName;
+        String sex;
+        int userHeight;
+        int userWeight;
+        ArrayList<Integer> totalDistanceByStage;
+        ArrayList<Integer> totalCalorieByStage;
+        ArrayList<Integer> totalScoreByStage;
+        int totalScore;
+        PersonalData(String id, String password, String userName, String sex, int userHeight, int userWeight, ArrayList<Integer> totalDistanceByStage, ArrayList<Integer> totalCalorieByStage, ArrayList<Integer> totalScoreByStage, int totalScore){
+            this.id = id;
+            this.password = password;
+            this.userName = userName;
+            this.sex = sex;
+            this.userHeight = userHeight;
+            this.userWeight = userWeight;
+            this.totalDistanceByStage = totalDistanceByStage;
+            this.totalCalorieByStage = totalCalorieByStage;
+            this.totalScoreByStage = totalScoreByStage;
+            this.totalScore = totalScore;
+        }
+    }
+
+
     //sqlite에서 이름과 비밀번호 수정.
-    public boolean UpdateSqliteName(Context context, SqliteDto sdto, String name, String pw) {
-        SqliteManager sqm=new SqliteManager(context, "user.db");
-        boolean res4=sqm.updateNamePassword(sdto, name, pw);
-        return res4;
+    public boolean updateUserNamePassword(Context context, String userId, String name, String pw) {
+
+
+        // 서버 연동 필요
+        UserDAO uDao = new UserDAO();
+        boolean isOk = uDao.update(userId, name, pw);
+
+        SqliteManager sqm = new SqliteManager(context, "user.db");
+
+        boolean res = false;
+        if(isOk)
+            res = sqm.updateNamePassword(userId, name, pw);
+
+        return res;
     }
+
+
     //sqlite에서 키와 몸무게 수정.
-    public boolean UpdateSqliteHeight(Context context, SqliteDto sdto, int ht, int wt){
-        SqliteManager sqm=new SqliteManager(context, "user.db");
-        boolean res5=sqm.updateHeightWeight(sdto,ht,wt);
-        return res5;
+    public boolean updateUserHeightWeight(Context context, SqliteDto dto, int ht, int wt){
+        SqliteManager sqm = new SqliteManager(context, "user.db");
+        boolean res = sqm.updateHeightWeight(dto, ht, wt);
+        return res;
     }
+
 
     // - get total distance
     //   - stageId == -1 => total of all stages

@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public  class SqliteOpenHelper extends SQLiteOpenHelper{
+
     public SqliteOpenHelper (Context context , String name,SQLiteDatabase.CursorFactory factory , int version ) {
         super(context, name, factory, version);
     }

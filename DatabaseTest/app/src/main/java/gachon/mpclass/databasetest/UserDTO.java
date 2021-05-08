@@ -5,23 +5,17 @@ package gachon.mpclass.databasetest;
 public class UserDTO {
 
     // Attribute
+    private int user_idx;
     private String user_id;
     private String user_name;
-    private String user_password;
 
-    public UserDTO(String id, String name, String pw)
-    {
+    public UserDTO(String id, String name) {
         this.user_id=id;
         this.user_name=name;
-        this.user_password=pw;
-    }
-    public UserDTO()
-    {
-
     }
 
     // Getter
-
+    public int getUser_idx() { return user_idx; }
     public String getUser_id()
         {
             return user_id;
@@ -30,13 +24,9 @@ public class UserDTO {
         {
             return user_name;
         }
-    public String getPassword()
-        {
-            return user_password;
-        }
 
     // Setter
-
+    public void setUser_idx(int userIdx) { this.user_idx = userIdx; }
     public void setUser_id(String id)
     {
         this.user_id=id;
@@ -45,6 +35,5 @@ public class UserDTO {
     {
         this.user_name=s;
     }
-    public void setUser_password(String pw){this.user_password=pw;}
 
 }
