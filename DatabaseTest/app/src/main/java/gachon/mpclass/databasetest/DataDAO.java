@@ -11,10 +11,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -23,16 +19,15 @@ import javax.xml.transform.Result;
 //->게임이 끝나면, (user_id, user_name, stage, distance, 칼로리) 서버에 보낸다.
 public class DataDAO {
     //Enroll the data
-    public void Create(DataDTO dt)
-    {
+    public boolean create(int userIdx, DataDTO dt) {
         String result = null;
         try {
-            URL url=new URL("https://api.gcmp.doky.space/data");
+            URL url=new URL("https://api.gcmp.doky.space/data/");
             JSONObject json = new JSONObject();
-            json.put("user_idx", dt.getUser_index());
+            json.put("user_idx", userIdx);
             json.put("stage_id", dt.getStage_id());
             json.put("distance",dt.getDistance());
-            json.put("calories",dt.getCalories());
+            json.put("calorie",dt.getCalorie());
             json.put("score",dt.getScore());
             String body = json.toString();
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -52,18 +47,22 @@ public class DataDAO {
             result = builder1.toString();
             in.close();
             Log.e("APIManager", result);
+            return true;
         }
-        catch(Exception e)
-        {
+        catch(Exception e) {
             e.printStackTrace();
+            return false;
         }
     }
+
+
     // Rank 읽어오기 위해서 Rank정보를 가져올 수 있게, 따로 클래스를 가져온다.
-    //stage와 feature인 score에 따라, 정보를 순차적으로 가져온다.
-    public ArrayList<Rank> Read(int stage, String feature) {
-        ArrayList<Rank> rk = new ArrayList<Rank>(); //Ranking 을 위한  Rank를 담을 class를 arraylist로 선언해서, arraylist에 담는다. 
+    // stage와 feature인 score에 따라, 정보를 순차적으로 가져온다.
+    public ArrayList<DataDTO> read(String feature, boolean isAscending, int stage) {
+        ArrayList<DataDTO> rk = new ArrayList<DataDTO>(); //Ranking 을 위한  Rank를 담을 class를 arraylist로 선언해서, arraylist에 담는다.
         try {
-            URL url = new URL("https://api.gcmp.doky.space/data?c=" + feature); //서버에 어떻게 보낼지에 대한 정보 부족. 서버에서 수정해주면 될것 같다.
+            Log.e("=====", "https://api.gcmp.doky.space/data?c=" + feature + "&o=" + (isAscending?"asc":"desc") + (stage != -1 ? "&stage=" + stage : ""));
+            URL url = new URL("https://api.gcmp.doky.space/data?c=" + feature + "&o=" + (isAscending?"asc":"desc") + (stage != -1 ? "&stage=" + stage : ""));
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             InputStream is = conn.getInputStream();
@@ -72,17 +71,18 @@ public class DataDAO {
             String line;
             while ((line = reader.readLine()) != null)
                 builder.append(line);
-            String result = "";
-            result = builder.toString();
-            JSONArray json = new JSONArray(result);
+            String resultJson = "";
+            resultJson = builder.toString();
+            JSONArray json = new JSONArray(resultJson);
+
             for (int i = 0; i < json.length(); i++) {
-                String rid = json.getJSONObject(i).getString("user_id");
-                int sid = json.getJSONObject(i).getInt("stage_id");
-                int dis = json.getJSONObject(i).getInt("distance");
-                double calories = json.getJSONObject(i).getDouble("calories");
+                String userName = json.getJSONObject(i).getString("user_name");
+                int stageId = json.getJSONObject(i).getInt("stage_id");
+                int distance = json.getJSONObject(i).getInt("distance");
+                int calorie = json.getJSONObject(i).getInt("calorie");
                 int score = json.getJSONObject(i).getInt("score");
-                Rank rank = new Rank(rid, sid, dis, calories, score);
-                rk.add(rank);
+                DataDTO result = new DataDTO(userName, stageId, distance, calorie, score);
+                rk.add(result);
             }
 
         } catch (Exception e) {
@@ -91,18 +91,14 @@ public class DataDAO {
         }
         return rk;
     }
-    // 미구현
-    public void Update(DataDTO dt, int score) throws ClassNotFoundException, SQLException
-    {
-
-    }
-    //미구현.
-    public void Delete(DataDTO dt) throws ClassNotFoundException, SQLException
-    {
-
-    }
 
 
+    // Not Implemented
+    // public void update(DataDTO dt, int score) throws ClassNotFoundException, SQLException {}
+
+
+    // Not Implemented
+    // public void delete(DataDTO dt) throws ClassNotFoundException, SQLException {}
 
 }
 

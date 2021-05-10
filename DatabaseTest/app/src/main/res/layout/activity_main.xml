@@ -16,17 +16,24 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/mdb"
-                android:text="DB생성"
+                android:id="@+id/b1"
+                android:text="1"
                 android:layout_margin="3dp"
             />
             <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/ddl"
-            android:text="테이블 생성"
+            android:id="@+id/b2"
+            android:text="2"
                 android:layout_margin="3dp"
             />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/b3"
+                android:text="3"
+                android:layout_margin="3dp"
+                />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -35,22 +42,22 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/ddl2"
-                android:text="Userdata삽입"
+                android:id="@+id/b4"
+                android:text="4"
                 android:layout_margin="3dp"
             />
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/dml"
-                android:text="출력"
+                android:id="@+id/b5"
+                android:text="5"
                 android:layout_margin="3dp"
             />
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/dml2"
-                android:text="조회"
+                android:id="@+id/b6"
+                android:text="6"
                 android:layout_margin="3dp"
             />
 
@@ -62,29 +69,48 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/rank"
-                android:text="랭킹조회"
+                android:id="@+id/b7"
+                android:text="7"
                 android:layout_margin="3dp"
             />
             <Button
-                android:id="@+id/modifyid"
+                android:id="@+id/b8"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="이름변경"
+                android:text="8"
                 android:layout_margin="3dp"
                 />
             <Button
-                android:id="@+id/modifypw"
+                android:id="@+id/b9"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="비밀번호 변경"
+                android:text="9"
+                android:layout_margin="3dp"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/b10"
+                android:text="10"
                 android:layout_margin="3dp"
                 />
             <Button
-                android:id="@+id/update"
+                android:id="@+id/b11"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="기록 갱신"
+                android:text="11"
+                android:layout_margin="3dp"
+                />
+            <Button
+                android:id="@+id/b12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="12"
                 android:layout_margin="3dp"
                 />
         </LinearLayout>

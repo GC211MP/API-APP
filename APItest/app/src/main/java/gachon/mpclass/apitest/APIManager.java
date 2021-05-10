@@ -1,7 +1,10 @@
-package gachon.mpclass.databasetest;
+package gachon.mpclass.apitest;
+
 import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStream;
@@ -14,7 +17,7 @@ public class APIManager {
     // Singleton
     private static APIManager instance = new APIManager();
 
-    APIManager(){}
+    private APIManager(){}
 
     public static APIManager getInstance(){
         return instance;
@@ -35,14 +38,14 @@ public class APIManager {
             while ((line = reader.readLine()) != null)
                 builder.append(line);
 
+
             String result = "";
             result = builder.toString();
             JSONObject json = new JSONObject(result);
 
-            int user_idx = json.getInt("user_idx");
             String user_id = json.getString("user_id");
+            int user_idx = json.getInt("user_idx");
             String user_name = json.getString("user_name");
-
 
             Log.e("APIManager", json.toString());
             Log.e("APIManager", "user_id: " + user_id);
@@ -163,10 +166,11 @@ public class APIManager {
             Log.e("APIManager", json.toString());
 
             for(int i = 0; i < json.length(); i++){
-                String cDate = json.getJSONObject(i).getString("c_date");
-                String userName = json.getJSONObject(i).getString("user_name");
-                int stageId = json.getJSONObject(i).getInt("stage_id");
-                int elapsedTime = json.getJSONObject(i).getInt("elapsed_time");
+                 String cDate = json.getJSONObject(i).getString("c_date");
+                 String userName = json.getJSONObject(i).getString("user_name");
+                 int stageId = json.getJSONObject(i).getInt("stage_id");
+                 int elapsedTime = json.getJSONObject(i).getInt("elapsed_time");
+
                 Log.e("APIManager", "c_date: " + cDate);
                 Log.e("APIManager", "user_name: " + userName);
                 Log.e("APIManager", "stage_id: " + stageId);

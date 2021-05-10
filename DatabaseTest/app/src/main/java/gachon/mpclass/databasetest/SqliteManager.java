@@ -14,46 +14,16 @@ public class SqliteManager {
         helper = new SqliteOpenHelper(context, name, null, 1);
     }
     public static SqliteManager open(Context context, String name) {
-        return new SqliteManager(context, name);
+        return new SqliteManager(context,name);
     }
-    //write agent info 이후에 가능
-    public void insert(String id,String pwd,String name,int ht, int wt, String sex)
-    {
-        database=helper.getWritableDatabase();
-        ContentValues values=new ContentValues();
-        values.put("id",id);
-        values.put("password",pwd);
-        values.put("name",name);
-        values.put("height",ht);
-        values.put("weight",wt);
-        values.put("sex",sex);
-        database.insert("user",null,values);
-        Log.i("db1","Success");
-    }
-    //update the user information, 키와 몸무게 수정 가능.
-    public void update(String id,int ht, int wt)
-    {
-        database=helper.getWritableDatabase();
-        ContentValues values=new ContentValues();
-        values.put("height",ht);
-        values.put("weight",wt);
-        database.update("user",values,"id=?",new String[]{id});
-        Log.i("db1","Success update");
-    }
-    public void delete(String id)
-    {
-        database=helper.getWritableDatabase();
-        database.delete("user","id=?",new String[]{id});
-        Log.i("db1",id+"정상적으로 삭제 되었습니다.");
-    }
+
+
     // print the all user. we can get the data using different command
     //필요한 조건으로 충분히 가능.
-    public void select()
-    {
-        database=helper.getWritableDatabase();
-        Cursor c=database.rawQuery("select * from user",null);
-        while(c.moveToNext())
-        {
+    public void select() {
+        database = helper.getWritableDatabase();
+        Cursor c = database.rawQuery("select * from user",null);
+        while(c.moveToNext()) {
             String id=c.getString(0);
             String pw=c.getString(1);
             String name=c.getString(2);
@@ -63,72 +33,115 @@ public class SqliteManager {
             Log.i("db1","id: "+id+" "+pw+" "+name+" "+ht+" "+wt+ " "+sex+" ");
         }
     }
-    //check the id is exists
-    public boolean checkID(String tid)
-    {
-        database=helper.getWritableDatabase();
-        Cursor c=database.rawQuery("select exists(select"+"'"+tid+"'"+" from user where id="+"'"+tid+"'"+")" ,null );
-        c.moveToNext();
-        int check=c.getInt(0);
-        if(check==1)
-        {
+
+
+    //write agent info 이후에 가능
+    public boolean insert(SqliteDto sdto) {
+        try {
+            database = helper.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put("id", sdto.getId());
+            values.put("password", sdto.getPassword());
+            values.put("name", sdto.getName());
+            values.put("height", sdto.getHeight());
+            values.put("weight", sdto.getWeight());
+            values.put("sex", sdto.getSex());
+            database.insert("user", null, values);
+            Log.i("db1", "Success");
+            select();
             return true;
         }
-        else
-        {
+        catch(Exception e) {
+            e.printStackTrace();
             return false;
         }
     }
-    //로그인 기능이 구현되야 할지 잘 몰라서 일단 구현.
-    public boolean Login(String tid, String tpw)
-    {
-        database=helper.getWritableDatabase();
-        Cursor c=database.rawQuery("select password from user where id="+"'"+tid+"'",null );
-        c.moveToNext();
-        String checkpw=c.getString(0);
-        if(tpw==checkpw)
-        {
+    //Read the user data
+    public SqliteDto read(String id) {
+        SqliteDto sdto = null;
+        try {
+            database = helper.getWritableDatabase();
+            Cursor c = database.rawQuery("select * from user where id=" + "'" + id + "'", null);
+            c.moveToNext();
+            sdto = new SqliteDto(c.getString(0), c.getString(1), c.getString(2), c.getInt(3), c.getInt(4), c.getString(5));
+            select();
+            Log.i("db1", "Success");
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+        return sdto;
+    }
+    //update the user information, 이름과 비밀번호 수정
+    public boolean updateNamePassword(String userId, String name, String password) {
+        try {
+            database = helper.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put("name", name);
+            values.put("password", password);
+            database.update("user", values, "id=?", new String[]{userId});
+            select();
+            Log.i("db1", "Success update");
             return true;
         }
-        else
-        {
+        catch(Exception e) {
+            e.printStackTrace();
             return false;
         }
     }
-    // Get the id values
-    public String GetID()
-    {
+    public boolean updateHeightWeight(int ht, int wt) {
+        try{
+            database = helper.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put("height", ht);
+            values.put("weight", wt);
+            database.update("user", values, "", null);
+            select();
+            Log.i("db1", "Success update");
+            return true;
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
+    }
+
+    // Get the id values //이 부분도 써야될지 잘 모르겟다.
+    public String getID() {
         database=helper.getWritableDatabase();
         Cursor c=database.rawQuery("select id from user",null);
         c.moveToNext();
         String gid=c.getString(0);
+        select();
         return gid;
     }
+
     // Get the login user's height
-    public int getcurHeight(String cid)
-    {
+    public int getcurHeight(String cid) {
         database=helper.getWritableDatabase();
         Cursor c=database.rawQuery("select height from user where id="+"'"+cid+"'",null );
         c.moveToNext();
         int cheight=c.getInt(0);
+        select();
         return cheight;
     }
     //Get the login user's weight
-    public int getcurWeight(String cid)
-    {
+    public int getcurWeight(String cid) {
         database=helper.getWritableDatabase();
         Cursor c=database.rawQuery("select weight from user where id="+"'"+cid+"'",null );
         c.moveToNext();
         int cweight=c.getInt(0);
+        select();
         return cweight;
     }
     //Get the login user's sex
-    public String getcurSex(String cid)
-    {
+    public String getcurSex(String cid) {
         database=helper.getWritableDatabase();
         Cursor c=database.rawQuery("select sex from user where id="+"'"+cid+"'",null );
         c.moveToNext();
         String csex=c.getString(0);
+        select();
         return csex;
     }
 
